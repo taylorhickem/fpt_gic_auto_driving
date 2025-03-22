@@ -1,6 +1,6 @@
 # Auto Driving Car Simulation
 
-You are tasked with developing a simulation program for an autonomous driving car, with the aim of competing with Tesla. Your team has already developed a prototype car, but it is still in its primitive stage.
+## Crash: About program
 
 The simulation program is designed to work with a rectangular field, specified by its width and height. The bottom left coordinate of the field is at position (0,0), and the top right position is denoted (width,height). For example, a field with dimensions 10 x 10 would have its upper right coordinate at position (9,9).
 
@@ -14,7 +14,9 @@ A list of commands can be issued to each car, which can be one of three commands
 
 If a car tries to move beyond the boundary of the field, the command is ignored, and the car stays in its current position. For example, if a car at position (0,0) is facing South and receives an F command, the command will be ignored as it would take the car beyond the boundary of the field.
 
-Users can interact with your simulation program through the command line interface. Upon launching the program, users are prompted with the following message:
+## Setup simulation
+
+_01 simulation setup_
 
 ```
 Welcome to Auto Driving Car Simulation!
@@ -22,13 +24,14 @@ Welcome to Auto Driving Car Simulation!
 Please enter the width and height of the simulation field in x y format:
 ```
 
-User is then able to enter:
+_02 exit_
 
 ```
-10 10
+Thank you for running the simulation. Goodbye!
 ```
 
-The system responds with:
+_03 adding cars_
+
 
 ```
 You have created a field of 10 x 10.
@@ -38,53 +41,26 @@ Please choose from the following options:
 [2] Run simulation
 ```
 
-User is then able to enter:
-
-```
-1
-```
-
-The system responds with:
+_03.01 add car step 01 name a car_
 
 ```
 Please enter the name of the car:
 ```
 
-User is then able to enter:
-
-```
-A
-```
-
-The system responds with:
+_03.02 add car step 02 initial pos and dir_
 
 ```
 Please enter initial position of car A in x y Direction format:
 ```
 
-User is then able to enter:
-
-```
-1 2 N
-```
-
-Please note that only N, S, W, E (representing North, South, West, East) are allowed for direction.
-
-The system responds with:
+_03.03 add car step 02 car commands_
 
 ```
 Please enter the commands for car A:
 ```
 
-User is then able to enter:
+only N, S, W, E (representing North, South, West, East) are allowed for direction.
 
-```
-FFRFFFFRRL
-```
-
-This means car A will move forward twice, turn right, move forward four times, turn right twice, and turn left once.
-
-The system responds with:
 
 ```
 Your current list of cars are:
@@ -95,116 +71,7 @@ Please choose from the following options:
 [2] Run simulation
 ```
 
-## Scenario 1 - Running simulation with a single car
-
-At this point, there are a field, a car with initial position, facing, and commands available. If user attempts to run simulation, user can enter:
-
-```
-2
-```
-
-Then the system runs all the commands for car A, and responds with:
-
-```
-Your current list of cars are:
-- A, (1,2) N, FFRFFFFRRL
-
-After simulation, the result is:
-- A, (5,4) S
-
-Please choose from the following options:
-[1] Start over
-[2] Exit
-```
-
-If user chooses to start over, the system will show:
-
-```
-Welcome to Auto Driving Car Simulation!
-
-Please enter the width and height of the simulation field in x y format:
-```
-
-If use choose to exit, the system will show:
-
-```
-Thank you for running the simulation. Goodbye!
-```
-
-## Scenario 2 - Running simulation with multiple cars
-
-After user adds one car to the field, user can also choose to continue to add more cars. Hence, following example above, when system responds with:
-
-```
-Your current list of cars are:
-- A, (1,2) N, FFRFFFFRRL
-
-Please choose from the following options:
-[1] Add a car to field
-[2] Run simulation
-```
-
-User then can enter:
-
-```
-1
-```
-
-The system then responds with:
-
-```
-Please enter the name of the car:
-```
-
-User is then able to enter:
-
-```
-B
-```
-
-The system responds with:
-
-```
-Please enter initial position of car B in x y Direction format:
-```
-
-User is then able to enter:
-
-```
-7 8 W
-```
-
-The system responds with:
-
-```
-Please enter the commands for car B:
-```
-
-User is then able to enter:
-
-```
-FFLFFFFFFF
-```
-
-Please note that the length of commands do not have to be the same. If a car runs out of command, it will stay put.
-
-The system responds with:
-
-```
-Your current list of cars are:
-- A, (1,2) N, FFRFFFFRRL
-- B, (7,8) W, FFLFFFFFFF
-
-Please choose from the following options:
-[1] Add a car to field
-[2] Run simulation
-```
-
-At this point, user can continue to add more cars or run simulation. If user tries to add new car, the program follows the process above. If user tries to run simulation, then user will enter:
-
-```
-2
-```
+## Run simulation
 
 Then the system will run all car A's commands and all car B's commands, then respond with:
 
@@ -234,10 +101,22 @@ If some cars collide at certain step, then collided cars stop moving and no long
 
 If cars do not have collision, then the system will print the final positions following example in Scenario 1.
 
-## General Guidelines
+## Guidelines
+
 1. The solution should be production grade with tests , guideline on how to run code etc and following standard software engineering guidelines
 2. If any assumptions are made, please document and share those as part of the submission.
 3. Similarly, if you identify any gaps or areas of improvements, please identify them as well. 
+4. format is command-line interface game
+
+- Include tests in your solution. We recommend using TDD to solve these problems, where possible.
+- Keep your methods and classes small.
+- Demonstrate a good understanding of clean code, object-oriented skills, and SOLID principles.
+- Submit production-ready code that is clean and easy to understand with documentation.
+- Include your git history in your submission and structure your commits as you would with production-ready code.
+
+
+## Disclosures
+_ChatGPT was used as a reference guide in the development of this program_
 
 
 ## Development strategy
@@ -261,8 +140,29 @@ If cars do not have collision, then the system will print the final positions fo
     - add program logic
     - pass all tests
 
-### Release 01: Design
+## Release 01: Design
     - system architecture
     - flowchart
     - test cases
+
+## Release 02: resource spin up
+    - hello world
+    - devops pipeline
+    - run tests expected to fail
+
+
+## Release 03: UX mock-up
+    - user interface, walks through basic flowchart with dumb values
+    - input validation, exception handling
+    - pass tests related to UX and input validation not program logic
+
+
+## Release 04: Model
+    - add program logic
+    - pass all tests
+
+ - this problem could be represented in linear algebra terms as each car corresponds to a vector
+ - it is a constrained linear optimization problem with the boundaries of the grid representing constraints
+ - it's actually even simpler than that as it is an integer problem since the options for motion are only up, down, left, right, and cars can only advance in a single whole unit at at time  
+
 
