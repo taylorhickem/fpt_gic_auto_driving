@@ -164,6 +164,8 @@ _ChatGPT was used as a reference guide in the development of this program_
  - it is a constrained linear optimization problem with the boundaries of the grid representing constraints
  - it's actually even simpler than that as it is an integer problem since the options for motion are only up, down, left, right, and cars can only advance in a single whole unit at at time  
 
+## Control flow
+![Control Flow](./car_sim_control_flow.png)
 
 ## Modules
 
