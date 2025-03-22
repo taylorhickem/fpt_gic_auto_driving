@@ -2,6 +2,7 @@
 """
 # dependencies ---------------------------------------------------------------
 import sys
+from . import drive
 import subprocess
 
 
@@ -32,7 +33,9 @@ def prompt():
 
 def navigate(command, args=[]):
     if command == 'start':
-        print('Setup simulation: ## UNDER CONSTRUCTIONS##')
+        drive.setup(args)
+    elif command == 'run':
+        drive.run(args)
     elif command == 'test':
         subprocess.run(["pytest", "tests"])
 
