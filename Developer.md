@@ -121,15 +121,15 @@ _ChatGPT was used as a reference guide in the development of this program_
 
 ## Development strategy
 
-1. design
+(OK) 1. resoure spin up
+    - hello world basic CLI
+    - Deployment and test environment setup
+    - run tests expected to fail
+
+2. design
     - system architecture
     - flowchart
     - test cases
-
-3. resoure spin up
-    - hello world
-    - devops pipeline
-    - run tests expected to fail
 
 3. UX mock-up
     - user interface, walks through basic flowchart with dumb values

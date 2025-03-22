@@ -16,23 +16,52 @@ A list of commands can be issued to each car, which can be one of three commands
 
 If a car tries to move beyond the boundary of the field, the command is ignored, and the car stays in its current position. For example, if a car at position (0,0) is facing South and receives an F command, the command will be ignored as it would take the car beyond the boundary of the field.
 
-## Getting started: Setup
+## Basic navigation
+
+_welcome_
+
+get a list of available command line prompts. 
+
+```
+>crash
+```
+
+_exit_
+
+Exit the program. 
+
+All simulation setup and results will be erased and gone forever
+
+```
+>crash exit
+```
+
+_test_
+
+Run system checks to verify program is working as expected.
+
+```
+>crash test
+```
+
+
+## Setting up and running simulation
 
 _01 simulation setup_
 
+To get started to set up the simulation, run `crash start` from the command line
 ```
-Welcome to Auto Driving Car Simulation!
+>crash start
+```
+
+```
+Simulation setup.
 
 Please enter the width and height of the simulation field in x y format:
 ```
 
-_02 exit_
 
-```
-Thank you for running the simulation. Goodbye!
-```
-
-_03 adding cars_
+_02 add cars_
 
 
 ```
@@ -43,19 +72,19 @@ Please choose from the following options:
 [2] Run simulation
 ```
 
-_03.01 add car step 01 name a car_
+_02.01 add car - step 01 name a car_
 
 ```
 Please enter the name of the car:
 ```
 
-_03.02 add car step 02 initial pos and dir_
+_02.02 add car - step 02 initial position and direction_
 
 ```
 Please enter initial position of car A in x y Direction format:
 ```
 
-_03.03 add car step 02 car commands_
+_02.03 add car - step 03 car commands_
 
 ```
 Please enter the commands for car A:
@@ -141,9 +170,11 @@ The Crash program is now installed.
 You can now interact with the program from the command line using the alias `crash` 
 
 ```
->crash start
+>crash
 
-Welcome to Crash! auto driving car simulation.
-
-Please enter the width and height of the simulation field in x y format:
+Welcome to Crash! Auto driving car simulation. To get started, select from any of these available commands:
+'crash start': setup the simulation
+'crash run': run the simulation
+'crash test': run unit tests
+'crash exit'
 ```
