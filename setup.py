@@ -1,9 +1,13 @@
 from setuptools import setup, find_packages
 
 setup(
-    name='fpt_gic_auto_driving',
+    name='crash',
+    description='Crash! auto driving simulation.',
     version=open('VERSION').read(),
     packages=find_packages(),
+    install_requires=[
+        'pytest'
+    ],
     entry_points={
         'console_scripts': [
             'crash=crash.__init__:main',  # or whichever function handles CLI
