@@ -16,29 +16,6 @@ A list of commands can be issued to each car, which can be one of three commands
 
 If a car tries to move beyond the boundary of the field, the command is ignored, and the car stays in its current position. For example, if a car at position (0,0) is facing South and receives an F command, the command will be ignored as it would take the car beyond the boundary of the field.
 
-## System requirements
-
-To use the Crash program on your Windows PC you should have the following minimum requirement
-
- - Windows OS minimum 7 or higher
- - CPU 1 GHz
- - RAM 2 GB
- - Free disk memory:
-      200 MB for python if not already installed
-      100 MB for source code
- - Python version 3.9.0
- - network access to internet
-
-## Installation and setup
-
-1. __Install [Python 3.9](https://wiki.python.org/moin/BeginnersGuide/Download)__
-
-If you have not already installed python 3.9, see the instructions on the website
-
-2. __(optional) Install [Git](https://git-scm.com/book/en/v2/Getting-Started-Installing-Git)__
-
-use Git to clone the source code onto your local pc, alternatively you can manually download the source code and unzip onto your local PC.
-
 ## Getting started: Setup
 
 _01 simulation setup_
@@ -126,5 +103,47 @@ If some cars collide at certain step, then collided cars stop moving and no long
 
 If cars do not have collision, then the system will print the final positions following example in Scenario 1.
 
+## System requirements
+
+To use the Crash program on your Windows PC you should have the following minimum requirement
+
+ - Windows OS minimum 7 or higher
+ - CPU 1 GHz
+ - RAM 2 GB
+ - Free disk memory:
+      200 MB for python if not already installed
+      100 MB for source code
+ - Python version 3.9.0
+ - network access to internet
+
 ## Installation and setup
 
+1. __Install [Python 3.9](https://wiki.python.org/moin/BeginnersGuide/Download)__
+
+If you have not already installed python 3.9, see the instructions on the website
+Remember to check the box “Add Python 3.9 to PATH” during install
+
+2. __(optional) Install [Git](https://git-scm.com/book/en/v2/Getting-Started-Installing-Git)__
+
+use Git to clone the source code onto your local pc, alternatively you can manually download the source code and unzip onto your local PC.
+
+```
+git clone https://github.com/taylorhickem/fpt_gic_auto_driving.git
+cd fpt_gic_auto_driving
+```
+
+```
+pip install -e .
+```
+
+The Crash program is now installed.
+
+You can now interact with the program from the command line using the alias `crash` 
+
+```
+>crash start
+
+Welcome to Auto Driving Car Simulation!
+
+Please enter the width and height of the simulation field in x y format:
+```
