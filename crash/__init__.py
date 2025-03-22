@@ -20,13 +20,10 @@ MESSAGES = {
 # main -----------------------------------------------------------------------
 def main():
     args = sys.argv[1:]
-    if not args:
-        print(MESSAGES['welcome'])
+    program_prompts = MESSAGES.get('program', {})
+    arg_program = args[0] if args else 'welcome'
+    if arg_program in program_prompts:
+        prompt = program_prompts.get(arg_program, '')
+        print(prompt)
     else:
-        program_prompts = MESSAGES.get('program', {})
-        arg_program = args[0]
-        if arg_program in program_prompts:
-            prompt = program_prompts.get(arg_program, '')
-            print(prompt)
-        else:
-            print(f'ERROR. Unknown command: {arg_program}')
+        print(f'ERROR. Unknown command: {arg_program}')
