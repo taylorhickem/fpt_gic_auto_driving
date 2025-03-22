@@ -143,7 +143,7 @@ You can now interact with the program from the command line using the alias `cra
 ```
 >crash start
 
-Welcome to Auto Driving Car Simulation!
+Welcome to Crash! auto driving car simulation.
 
 Please enter the width and height of the simulation field in x y format:
 ```
