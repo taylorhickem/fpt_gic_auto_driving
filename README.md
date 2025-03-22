@@ -102,9 +102,15 @@ Please choose from the following options:
 [2] Run simulation
 ```
 
-## Run simulation
+## Simulation run
 
-Then the system will run all car A's commands and all car B's commands, then respond with:
+Run the simulation
+
+```
+>crash run
+```
+
+The system will run all car A's commands and all car B's commands, then respond with:
 
 ```
 Your current list of cars are:
