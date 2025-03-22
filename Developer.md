@@ -121,22 +121,21 @@ _ChatGPT was used as a reference guide in the development of this program_
 
 ## Development strategy
 
-(OK) 1. resoure spin up
+1. OK      resoure spin up
+    - git repository
     - hello world basic CLI
     - Deployment and test environment setup
-    - run tests expected to fail
 
-2. design
-    - system architecture
+2. (open)  design
     - flowchart
     - test cases
 
-3. UX mock-up
+3. (open)  UX mock-up
     - user interface, walks through basic flowchart with dumb values
     - input validation, exception handling
     - pass tests related to UX and input validation not program logic
 
-4. model
+4. (open)  model
     - add program logic
     - pass all tests
 
@@ -166,3 +165,24 @@ _ChatGPT was used as a reference guide in the development of this program_
  - it's actually even simpler than that as it is an integer problem since the options for motion are only up, down, left, right, and cars can only advance in a single whole unit at at time  
 
 
+## Modules
+
+### _ _ init _ _ .py
+
+entry point for CLI navigation 
+
+### drive.py
+
+main module for running the simulation
+
+__.setup(args)__
+
+setup the simulation case
+
+__.add_car()__
+
+add a car to simulation case
+
+__.run(args)__
+
+run the simulation case
