@@ -117,7 +117,7 @@ class InteractiveApp:
             if outcome == -1:
                 self._exception_handle()
             else:
-                template_key = 'success' if outcome == 0 else 'fail'
+                template_key = 'success' if outcome == 1 else 'fail'
                 msg_template = self._get_prompt([method, template_key])
                 if params:
                     msg = msg_template.format(**params)
