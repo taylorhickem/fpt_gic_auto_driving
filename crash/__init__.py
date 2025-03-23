@@ -22,8 +22,8 @@ MESSAGES = {
 
 
 # main -----------------------------------------------------------------------
-def prompt():
-    args = sys.argv[1:]
+def prompt(args):
+    #args = sys.argv[1:]
     nav_prompts = MESSAGES.get('navigate', {})
     nav = args[0] if args else 'welcome'
     nav_args = args[1:] if len(args) > 1 else []
@@ -41,8 +41,29 @@ def navigate(command, args=[]):
         subprocess.run(["pytest", "tests"])
 
 
-def main():
+def app_start():
     app = InteractiveApp()
     app.run()
+
+
+def ui_mode():
+    args = sys.argv[1:]
+    mode = args[0] if args else 'ui'
+    valid_modes = ['test', 'ui']
+    if mode in valid_modes:
+        nav_prompts = MESSAGES.get('navigate', {})
+        prompt_msg = nav_prompts.get(mode, '')
+        if prompt_msg:
+            print(prompt_msg)
+        if mode == 'test':
+            subprocess.run(["pytest", "tests"])
+        elif mode == 'ui':
+            app_start()
+    else:
+        print(f'ERROR. Unknown command: {mode}')
+
+
+def main():
+    ui_mode()
     #nav, nav_args = prompt()
     #navigate(nav, args=nav_args)    
