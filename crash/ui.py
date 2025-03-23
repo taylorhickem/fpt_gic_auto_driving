@@ -112,7 +112,7 @@ class InteractiveApp:
 
     def _drive_response_process(self, method, response):
         if response:
-            outcome = response.get('outcome', -1)
+            outcome = response.get('success', -1)
             params = response.get('params', {})
             if outcome == -1:
                 self._exception_handle()
