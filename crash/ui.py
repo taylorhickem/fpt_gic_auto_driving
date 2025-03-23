@@ -54,10 +54,14 @@ class InteractiveApp:
         self.output_fn(exit_msg)        
 
     def _exception_handle(self, ex_type='', params={}, msg='', action=''):
+        if not ex_type:
+            ex_type = 'fail'
         msg_template = self._get_prompt(['exceptions', ex_type])
         if ex_type == 'invalid_input':
             inputs = params.get('inputs', [])
             msg = msg_template.format(inputs=inputs)
+        else:
+            msg = msg_template
         if not action:
             action = 'exit'
         if msg:
@@ -85,37 +89,39 @@ class InteractiveApp:
 
     def _generic_drive_method(self, method):
         start_msg = self._get_prompt([method, 'start'])
-        success_msg = self._get_prompt([method, 'success'])
         input_prompt = self._get_prompt([method, 'input'])
-        fail_msg = self._get_prompt([method, 'fail'])
-        result = 0
         if start_msg:
             self.output_fn(start_msg)
         if method in DRIVE_METHODS:
             drive_func = getattr(drive, method)            
             param_keys = re.findall(r'\{(.*?)\}', input_prompt)
-            self.output_fn(f'inputs I am expecting: {param_keys}')
             if input_prompt:
                 input_response = self.input_fn(input_prompt)
-                self.output_fn(f'this is what I received from you {input_response}')
                 input_args = input_response.strip().split()
-                self.output_fn(f'this is your response after I applied .strip().split() {input_args}')
-                self.output_fn(f'I count {len(input_args)} arguments')
                 if len(input_args) != len(param_keys):
                     self._exception_handle(ex_type='invalid_input', params={'inputs': input_response})
-                    result = -1
                 else:
                     prompt_kwargs = dict(zip(param_keys, input_args))
-                    result = drive_func(**prompt_kwargs)
+                    response = drive_func(**prompt_kwargs)
+                    self._drive_response_process(method, response)
             else:
-                result = drive_func()
+                response = drive_func()
+                self._drive_response_process(method, response)
         else:
             self._exception_handle(ex_type='method_not_found', params={'method': method})
-            result = -1
-        if result == 1:
-            self.output_fn(success_msg)
-        elif result == 0:
-            self.output_fn(fail_msg)
+
+    def _drive_response_process(self, method, response):
+        if response:
+            outcome = response.get('outcome', -1)
+            params = response.get('params', {})
+            if outcome == -1:
+                self._exception_handle()
+            else:
+                template_key = 'success' if outcome == 0 else 'fail'
+                msg_template = self._get_prompt([method, template_key])
+                if params:
+                    msg = msg_template.format(**params)
+                self.output_fn(msg)
 
     def _menu(self):
         menu_prompt = self._get_prompt(['navigate', 'getting_started'])
@@ -141,13 +147,3 @@ class InteractiveApp:
 
     def _setup(self):
         self._grid_create()
-
-        #while True:
-        #    answer = self.input_fn("Do you want to continue? (y/n): ")
-        #    if answer.lower() == "n":
-        #        self.output_fn("Goodbye!")
-        #        break
-        #    elif answer.lower() == "y":
-        #        self.output_fn("Great! Let's continue...")
-        #    else:
-        #        self.output_fn("Please enter y or n.")
