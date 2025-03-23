@@ -10,6 +10,8 @@ from . import drive
 PROGRAM_NAME = 'Crash'
 CLI_ALIAS = 'crash'
 DRIVE_METHODS = [
+    'setup',
+    'run',
     'grid_create',
     'car_add'
 ]
