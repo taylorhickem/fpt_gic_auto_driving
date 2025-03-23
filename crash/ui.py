@@ -31,7 +31,7 @@ MESSAGES = {
     },
     'grid_create': {
         'start': 'Create simulation grid ...',
-        'input': 'Please enter the width and height of the simulation field in h, w format:',
+        'input': 'Please enter the width and height of the simulation field in {h}, {w} format:',
         'success': 'created grid with height:{h} and width:{w}.',
         'fail': 'created grid unsuccessful.'
     },
@@ -94,6 +94,7 @@ class InteractiveApp:
         if method in DRIVE_METHODS:
             drive_func = getattr(drive, method)            
             param_keys = re.findall(r'\{(.*?)\}', input_prompt)
+            self.output_fn(f'inputs I am expecting: {param_keys}')
             if input_prompt:
                 input_response = self.input_fn(input_prompt)
                 self.output_fn(f'this is what I received from you {input_response}')
