@@ -43,10 +43,12 @@ MESSAGES = {
     }
 }
 
+
 # classes ------------------------------------------------------------------
 class InteractiveApp:
     def __init__(self, input_fn=input, output_fn=print):
         self.input_fn = input_fn
+        drive.state_refresh()
         self.output_fn = output_fn
 
     def _exit(self):
@@ -143,6 +145,7 @@ class InteractiveApp:
         self._generic_drive_method(method='grid_create')
 
     def _run(self):
+        # perform validation checks before running drive method 'run'
         self._generic_drive_method(method='run')
 
     def _setup(self):

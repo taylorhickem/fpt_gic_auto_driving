@@ -194,6 +194,10 @@ _ChatGPT was used as a reference guide in the development of this program_
 
 ## Modules
 
+___ _ init _ _.py__
+
+entry point from the CLI. toggle between interactive and test modes
+
 __ui.py__
 
 user interface control flow and input validation wrappers around the program methods.
@@ -202,31 +206,45 @@ __drive.py__
 
 core program methods to create and run the simulation from validated inputs
 
-__exceptions.py__
+__state.py__
 
-handles exceptions and gracefully exits program
+handles the memory state of the simulation
 
-### ui.py
+### ui.InteractiveApp
 
-user interface control flow and input validation wrappers around the program methods.
+class for user interface control flow and input validation wrappers around the program methods.
 
 __.exit()__
 
+cleanup workspace and exit program
 
-__.exception()__
+__.exception_handle()__
 
+handles exceptions gracefully with helpful user notifications specific to the error context
+
+__.boot()__
+
+entry point for starting the app
+
+__._menu()__
+
+main landing page with navigation menu
 
 __.setup()__
 
+setup a new simulation
 
 __.run()__
 
+perform validation checks that the state is ready to run, and if so, run, else, navigate to the missing step
 
 __.grid_create()__
 
+create a grid
 
 __.car_add()__
 
+add a car to the simulation
 
 ### drive.py
 
@@ -252,3 +270,19 @@ __.car_add()__
 
 add a car to simulation case
 
+
+### state.py
+
+handles memory state of simulation
+
+__.refresh()__
+
+wipes the state clean
+
+__.load()__
+
+loads the state from file
+
+__.save()__
+
+saves the memory state to file
