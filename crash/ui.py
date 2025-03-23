@@ -97,6 +97,7 @@ class InteractiveApp:
                 input_args = input_response.strip().split()
                 if len(input_args) != len(param_keys):
                     self._exception_handle(ex_type='invalid_input', params={'inputs': input_response})
+                    result = -1
                 else:
                     prompt_kwargs = dict(zip(param_keys, input_args))
                     result = drive_func(**prompt_kwargs)
@@ -104,9 +105,10 @@ class InteractiveApp:
                 result = drive_func()
         else:
             self._exception_handle(ex_type='method_not_found', params={'method': method})
+            result = -1
         if result == 1:
             self.output_fn(success_msg)
-        else:
+        elif result == 0:
             self.output_fn(fail_msg)
 
     def _menu(self):
