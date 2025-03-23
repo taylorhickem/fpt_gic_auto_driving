@@ -167,24 +167,88 @@ _ChatGPT was used as a reference guide in the development of this program_
 ## Control flow
 ![Control Flow](./car_sim_control_flow.png)
 
+## Tests
+
+1. input validations for each user input method
+    - start
+    - run
+    - grid_create
+    - car_add
+    - car_name
+    - car_position
+    - car_commands
+
+2. navigation flow
+    - grid_create -> car_add
+    - check grid create and car added before .run
+    - redirect to add car if missing
+
+3. simulation run
+    - one valid moving car and valid grid
+    - one valid stationary car and valid grid
+    - multiple cars no overlap, no collisions
+    - multiple cars with overlap
+    - multiple cars with collisions
+    - cars near boundary
+
+
 ## Modules
 
-### _ _ init _ _ .py
+__ui.py__
 
-entry point for CLI navigation 
+user interface control flow and input validation wrappers around the program methods.
+
+__drive.py__
+
+core program methods to create and run the simulation from validated inputs
+
+__exceptions.py__
+
+handles exceptions and gracefully exits program
+
+### ui.py
+
+user interface control flow and input validation wrappers around the program methods.
+
+__.exit()__
+
+
+__.exception()__
+
+
+__.setup()__
+
+
+__.run()__
+
+
+__.grid_create()__
+
+
+__.car_add()__
+
 
 ### drive.py
 
-main module for running the simulation
+core program methods to create and run the simulation from validated inputs
 
-__.setup(args)__
+__.exit()__
 
-setup the simulation case
+cleanup workspace and end program
 
-__.add_car()__
+__.exception()__
+
+handle exceptions and exit gracefully
+
+__.run()__
+
+run the simulation case
+
+__.grid_create()__
+
+create the grid from initial dimensions
+
+__.car_add()__
 
 add a car to simulation case
 
-__.run(args)__
-
-run the simulation case

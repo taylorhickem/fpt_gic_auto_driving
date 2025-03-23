@@ -3,6 +3,7 @@
 # dependencies ---------------------------------------------------------------
 import sys
 from . import drive
+from .ui import InteractiveApp
 import subprocess
 
 
@@ -41,5 +42,7 @@ def navigate(command, args=[]):
 
 
 def main():
-    nav, nav_args = prompt()
-    navigate(nav, args=nav_args)    
+    app = InteractiveApp()
+    app.run()
+    #nav, nav_args = prompt()
+    #navigate(nav, args=nav_args)    
