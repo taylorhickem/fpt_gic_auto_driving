@@ -1,20 +1,43 @@
+""" Crash: program interactive user interface
+"""
+
 # dependencies ---------------------------------------------------------------
 import sys
-
+import re
+from . import drive
 
 # constants ------------------------------------------------------------------
 PROGRAM_NAME = 'Crash'
 CLI_ALIAS = 'crash'
+DRIVE_METHODS = [
+    'grid_create',
+    'car_add'
+]
 MESSAGES = {
     'navigate': {
         'welcome': f"Welcome to {PROGRAM_NAME}! Auto driving car simulation.",
-        'getting_started': f"To get started, select from any of these available commands: \n'start': setup the simulation \n'run': run the simulation\n'exit'\n ...",
-        'start': f"Simulation setup.\n\nPlease enter the width and height of the simulation field in x y format:",
+        'getting_started': f"To get started, select from any of these available commands: \n'menu': return to this main menu\n'setup': setup the simulation \n'run': run the simulation\n'exit'\n ...",
+        'setup': f"Simulation setup...",
         'run': f"Running simulation...",
-        'exit': 'Thank you for running the simulation. Goodbye!'    
+        'exit': 'Thank you for running the simulation. Goodbye!',
+        'menu': 'Returning to the main menu ...'    
     },
     'exceptions': {
-        'invalid_input': 'ERROR. invalid input(s) {inputs}'
+        'invalid_input': 'ERROR. invalid input(s) {inputs}',
+        'method_not_found': 'ERROR. method not found {method}',
+        'fail': 'ERROR. something went wrong'
+    },
+    'grid_create': {
+        'start': 'Create simulation grid ...',
+        'input': 'Please enter the width and height of the simulation field in h, w format:',
+        'success': 'created grid with height:{h} and width:{w}.',
+        'fail': 'created grid unsuccessful.'
+    },
+    'car_add': {
+        'start': 'Add car ...',
+        'input': 'car name:',
+        'success': 'car added:{name}.',
+        'fail': 'add car unsuccessful.'
     }
 }
 
@@ -56,18 +79,61 @@ class InteractiveApp:
     def boot(self):
         welcome_msg = self._get_prompt(['navigate', 'welcome'])
         self.output_fn(welcome_msg)
-        self._run()
+        self._menu()
 
-    def _run(self):
-        getting_started_msg = self._get_prompt(['navigate', 'getting_started'])
-        nav = self.input_fn(getting_started_msg)
-        nav_prompt = self._get_prompt(['navigate', nav])
-        if nav_prompt:
-            self.output_fn(nav_prompt)
-            self.output_fn(f'executing {nav} ...')
+    def _generic_drive_method(self, method):
+        start_msg = self._get_prompt([method, 'start'])
+        success_msg = self._get_prompt([method, 'success'])
+        input_prompt = self._get_prompt([method, 'input'])
+        fail_msg = self._get_prompt([method, 'fail'])
+        result = 0
+        if start_msg:
+            self.output_fn(start_msg)
+        if method in DRIVE_METHODS:
+            drive_func = getattr(drive, method)            
+            param_keys = re.findall(r'\{(.*?)\}', input_prompt)
+            if input_prompt:
+                input_response = self.input_fn(input_prompt)
+                input_args = input_response.strip().split()
+                if len(input_args) != len(param_keys):
+                    self._exception_handle(ex_type='invalid_input', params={'inputs': input_response})
+                else:
+                    prompt_kwargs = dict(zip(param_keys, input_args))
+                    result = drive_func(**prompt_kwargs)
+            else:
+                result = drive_func()
+        else:
+            self._exception_handle(ex_type='method_not_found', params={'method': method})
+        if result == 1:
+            self.output_fn(success_msg)
+        else:
+            self.output_fn(fail_msg)
+
+    def _menu(self):
+        menu_prompt = self._get_prompt(['navigate', 'getting_started'])
+        nav = self.input_fn(menu_prompt)        
+        if nav == 'exit':
+            self._exit()
+        elif nav == 'menu':
+            transition_prompt = self._get_prompt(['navigate', nav])
+            self.output_fn(transition_prompt)
+            self._menu()
+        elif nav == 'setup':
+            self._setup()
+        elif nav == 'run':
+            self._run()
         else:
             self._exception_handle(ex_type='invalid_input', params={'inputs':[nav]})
         
+    def _grid_create(self):
+        self._generic_drive_method(method='grid_create')
+
+    def _run(self):
+        self._generic_drive_method(method='run')
+
+    def _setup(self):
+        self._grid_create()
+
         #while True:
         #    answer = self.input_fn("Do you want to continue? (y/n): ")
         #    if answer.lower() == "n":
