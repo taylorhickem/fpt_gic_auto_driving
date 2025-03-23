@@ -96,7 +96,10 @@ class InteractiveApp:
             param_keys = re.findall(r'\{(.*?)\}', input_prompt)
             if input_prompt:
                 input_response = self.input_fn(input_prompt)
+                self.output_fn(f'this is what I received from you {input_response}')
                 input_args = input_response.strip().split()
+                self.output_fn(f'this is your response after I applied .strip().split() {input_args}')
+                self.output_fn(f'I count {len(input_args)} arguments')
                 if len(input_args) != len(param_keys):
                     self._exception_handle(ex_type='invalid_input', params={'inputs': input_response})
                     result = -1
