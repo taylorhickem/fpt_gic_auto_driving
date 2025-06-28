@@ -44,8 +44,54 @@ Run system checks to verify program is working as expected.
 >crash test
 ```
 
+## Input specification
+
+The input consists of a series of specifications
+
+```
+10 10         # grid 
+
+A             # Car A
+1 2 N         # initial position + direction North "N"
+FFRFFFFRRL    # sequence of steps
+
+B             # Car B
+7 8 W         # initial position + direction West "W"
+FFLFFFFFFF    # sequence of steps
+```
+
+_grid_
+
+The first specification is the grid dimensions, which is two integers, separated by a space for the height, and widght
+
+| id | specification | sample value | rules |
+| - | - | - | - |
+| 01 | grid specification | 10 10 | two positive integers separated by a space |
+
+```
+10 10         # grid 
+```
+
+_car_
+
+The next series of specifications is a colleciton of N cars. each car specification is comprised of four specifications each
+
+| id | specification | sample value | rules |
+| - | - | - | - |
+| 01 | car name | A | alphanumeric |
+| 02 | initial position and direction | 1 2 | two positive integers separated by a space  |
+| 03 | direction | N | letter [N, E, S, W] |
+| 04 | moves sequence | FFRFFFFRRL | only [L, R, F] |
+
+```
+A             # Car name
+1 2           # initial position
+N             # direction North "N"
+FFRFFFFRRL    # sequence of moves
+```
 
 ## Setting up and running simulation
+
 
 _01 simulation setup_
 
