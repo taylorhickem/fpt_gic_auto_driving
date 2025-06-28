@@ -38,7 +38,7 @@ MESSAGES = {
     'grid_create': {
         'start': 'Create simulation grid ...',
         'input': 'Please enter the width and height of the simulation field in {h}, {w} format:',
-        'success': 'created grid with height:{h} and width:{w}.',
+        'success': 'created grid with height {h} and width {w}.',
         'fail': 'created grid unsuccessful.'
     },
     'cars_add': {
@@ -91,9 +91,9 @@ class InteractiveApp:
         msg_template = self._get_prompt(['exceptions', ex_type])
         if ex_type == 'invalid_input':
             inputs = params.get('inputs', [])
-            msg = msg_template.format(inputs=inputs) + f' {msg}' if msg else ''
+            msg = msg_template.format(inputs=inputs) + f' {msg}' if msg else msg_template.format(inputs=inputs)
         else:
-            msg = msg_template + ' ' + f' {msg}' if msg else ''
+            msg = msg_template + f' {msg}' if msg else msg_template
         return msg
 
     def _exception_handle(self, ex_type='', params={}, msg='', action=''):
@@ -213,9 +213,9 @@ class InteractiveApp:
                     template_key = 'success'
                 msg_template = self._get_prompt([method, template_key])
                 if params:
-                    msg = msg_template.format(**params) + f' {drive_msg}' if drive_msg else ''
+                    msg = msg_template.format(**params) + f' {drive_msg}' if drive_msg else msg_template.format(**params)
                 else:
-                    msg = msg_template + f' {drive_msg}' if drive_msg else ''
+                    msg = msg_template + f' {drive_msg}' if drive_msg else msg_template
                 self.output_fn(msg)
 
     def _menu(self):
@@ -247,10 +247,11 @@ class InteractiveApp:
         while add_open:
             add_response = self._car_add()
             outcome = add_response.get('success', -1)
-            car_name = add_response.get('car_name', '')
+            car_name = add_response.get('params', {}).get('name', '')
             if outcome == 1:
                 if car_name not in car_names:
                     car_names.append(car_name)
+                    self._drive_response_process('car_add', add_response)
                     continue_response = self._get_input([method, 'continue'])
                     if continue_response['success'] == 1:                    
                         continue_yn = continue_response.get('params', {}).get('add', 'n')
@@ -313,7 +314,7 @@ class InteractiveApp:
                 response = drive_func(**car_specs)
             except Exception as e:
                 error = f'ERROR. problem adding car {car_name}. {e}'
-            response['car_name'] = car_name
+                response['params'] = {'name': car_name}
 
         if error:
             response['error'] = error

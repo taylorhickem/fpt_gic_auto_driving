@@ -96,65 +96,92 @@ FFRFFFFRRL    # sequence of moves
 
 _01 simulation setup_
 
-To get started to set up the simulation, run `crash start` from the command line
+To get started to set up the simulation, select `setup` from the main menu
+
 ```
->crash start
+Welcome to Crash! Auto driving car simulation.
+To get started, select from any of these available commands: 
+'menu': return to this main menu
+'setup': setup the simulation
+'run': run the simulation
+'exit'
+...
 ```
 
 ```
-Simulation setup.
+...setup
+```
 
-Please enter the width and height of the simulation field in x y format:
+```
+Create simulation grid ...
+Please enter the width and height of the simulation field in {h}, {w} format:
+```
+
+enter two positive integers, separated by a space to specify the grid. for example '10 10'
+
+```
+Please enter the width and height of the simulation field in {h}, {w} format:10 10
+created grid with height 10 and width 10.
 ```
 
 
 _02 add cars_
 
-
 ```
-You have created a field of 10 x 10.
-
-Please choose from the following options:
-[1] Add a car to field
-[2] Run simulation
+Add cars ...
 ```
 
 _02.01 add car - step 01 name a car_
 
 ```
-Please enter the name of the car:
+Add a car ...
+{name}:A
 ```
 
 _02.02 add car - step 02 initial position and direction_
 
 ```
-Please enter initial position of car A in x y Direction format:
-```
-
-_02.03 add car - step 03 car commands_
-
-```
-Please enter the commands for car A:
+position {x}, {y}:1 1
 ```
 
 only N, S, W, E (representing North, South, West, East) are allowed for direction.
 
+```
+{direction} [N, E, S, W]:N
+```
+
+_02.03 add car - step 03 car moves_
+
+only L, R and F (representing Left, Right, and Front) are allowed moves.
 
 ```
-Your current list of cars are:
-- A, (1,2) N, FFRFFFFRRL
-
-Please choose from the following options:
-[1] Add a car to field
-[2] Run simulation
+{moves}, a sequence of [L, R, F]:LRLRF
 ```
+
+```
+car added:A.
+```
+
+_02.04 add another car_
+
+```
+{add} another car? y/n.n
+```
+
+if anything other than 'y', then the cars add module exits
+
+```
+cars added:['A'].
+```
+
+setup complete, on to running the simulation
 
 ## Simulation run
 
 Run the simulation
 
 ```
->crash run
+... run
 ```
 
 The system will run all car A's commands and all car B's commands, then respond with:
