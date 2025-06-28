@@ -252,9 +252,10 @@ You can now interact with the program from the command line using the alias `cra
 ```
 >crash
 
-Welcome to Crash! Auto driving car simulation. To get started, select from any of these available commands:
-'crash start': setup the simulation
-'crash run': run the simulation
-'crash test': run unit tests
-'crash exit'
+Welcome to Crash! Auto driving car simulation.
+To get started, select from any of these available commands: 
+'menu': return to this main menu
+'setup': setup the simulation
+'run': run the simulation
+'exit'
 ```
