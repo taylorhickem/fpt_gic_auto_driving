@@ -20,20 +20,21 @@ If a car tries to move beyond the boundary of the field, the command is ignored,
 
 _welcome_
 
-get a list of available command line prompts. 
+start the program. get a list of available command line prompts. 
 
-```
+```bash
 >crash
 ```
 
-_exit_
-
-Exit the program. 
-
-All simulation setup and results will be erased and gone forever
-
-```
->crash exit
+```bash
+>crash
+Welcome to Crash! Auto driving car simulation.
+To get started, select from any of these available commands: 
+'menu': return to this main menu
+'setup': setup the simulation
+'run': run the simulation
+'exit'
+...
 ```
 
 _test_

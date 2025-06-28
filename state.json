@@ -1,1 +1,1 @@
-{"grid": {"height": 3, "width": 5, "board": [[0, 0, 0, 0, 0], [0, 1, 0, 0, 0], [0, 0, 0, 0, 0]]}, "cars": {"1": {"name": "A", "position": [1, 1], "direction": "N", "moves": "FRFR"}}}
+{}

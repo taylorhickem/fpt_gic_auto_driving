@@ -22,7 +22,7 @@ def ui_mode():
         if prompt_msg:
             print(prompt_msg)
         if mode == 'test':
-            subprocess.run(["pytest", "tests"])
+            subprocess.run(["pytest", "test.py"])
         elif mode == 'ui':
             app_start()
     else:
