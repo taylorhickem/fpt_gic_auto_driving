@@ -33,6 +33,28 @@ class CrashTests(unittest.TestCase):
         actual = response_actual.get('success')
         self.assertEqual(expected, actual)
 
+    def test_car_add_and_run(self):
+        drive.state_refresh()
+        drive.grid_create(h=5, w=5)
+        car_a = {
+            'name': 'A',
+            'position': {'x': 1, 'y': 1},
+            'direction': 'N',
+            'moves': 'FF'
+        }
+        car_b = {
+            'name': 'B',
+            'position': {'x': 2, 'y': 2},
+            'direction': 'E',
+            'moves': 'FF'
+        }
+        response_a = drive.car_add(**car_a)
+        response_b = drive.car_add(**car_b)
+        self.assertEqual(1, response_a.get('success'))
+        self.assertEqual(1, response_b.get('success'))
+        run_response = drive.run()
+        self.assertEqual(1, run_response.get('success'))
+
 
 if __name__ == '__main__':
     unittest.main()

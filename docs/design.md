@@ -328,3 +328,9 @@ exception conditions
 2. grid boundary violations
 
 For both exceptions, the model records the exception details, removes the exception moves m_i from the board move matrix M, and retries until a valid board move or until the move matrix M is an empty matrix ie no moves to make.
+
+In the reference implementation the program translates the ORM `Case` object to
+a set of matrices using `case_to_matrix`.  After each simulation step the matrix
+state is converted back into the object model with `matrix_to_case`.  The helper
+`linear_step` applies the pending moves sequentially and records collision
+events while persisting the board state between steps.
