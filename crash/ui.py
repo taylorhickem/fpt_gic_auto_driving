@@ -48,6 +48,11 @@ MESSAGES = {
         'default': 'no cars added.',
         'fail': 'add cars unsuccessful.'
     },
+    'run': {
+        'start': 'Running simulation...',
+        'success': 'simulation complete.',
+        'fail': 'simulation failed.'
+    },
     'car_add': {
         'start': 'Add a car ...',
         'success': 'car added:{name}.',

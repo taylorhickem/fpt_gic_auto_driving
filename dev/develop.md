@@ -49,6 +49,13 @@ Session logs are recorded in reverse-chronological order and timestamped to Sing
 
 ### Linear algebra model [Codex] Codex prompt 2025-06-29 <HH>:<MM>
 
+- Implemented linear algebra helper functions `case_to_matrix`, `matrix_to_case`
+  and `linear_step` in `drive.py`.
+- Completed `run` method to execute simulation steps and persist `state.json`.
+- Added constants for direction vectors and fixed a bug in `Grid.car_move`.
+- Extended tests to cover car add and simulation run; all tests passing.
+- Documented matrix translation workflow in `docs/design.md`.
+
 
 ### Linear algebra model [Developer] Codex prompt 2025-06-29 20:30
 

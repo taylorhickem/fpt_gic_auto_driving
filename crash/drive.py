@@ -2,9 +2,33 @@
 """
 # dependencies ---------------------------------------------------------------------
 from . import state
-from typing import Dict, List
+from typing import Dict, List, Tuple
+import numpy as np
 
 # constants ------------------------------------------------------------------------
+DIRECTION_LEFT = {
+    "N": "W",
+    "W": "S",
+    "S": "E",
+    "E": "N"
+}
+
+DIRECTION_RIGHT = {
+    "N": "E",
+    "E": "S",
+    "S": "W",
+    "W": "N"
+}
+
+VECTOR_MOVE = {
+    "N": np.array([1, 0]),
+    "E": np.array([0, 1]),
+
+    "S": np.array([-1, 0]),
+    "W": np.array([0, -1])
+}
+
+
 
 
 # classes --------------------------------------------------------------------------
@@ -87,7 +111,7 @@ class Grid(object):
 
     def car_move(self, car_id, pos_start, pos_new):
         i = pos_new[0]
-        j = pos_new[j]
+        j = pos_new[1]
         if self.valid_coordinates(i, j):
             if self.slot_available(i, j):
                 self._car_remove(pos_start[0], pos_start[1])            
@@ -159,6 +183,7 @@ class Car(object):
     direction = 'N'
     next_moves = ''
     _state = 1
+    result = ''
     status = 1
     error = ''
     def __init__(self, **kwargs):
@@ -371,6 +396,60 @@ def car_from_dict(params):
         raise ValueError(f"car must contain 'name' 'position', 'direction' and 'moves' keys. dictionary missing required parameters. {params}")
 
 
+def case_to_matrix(case: Case) -> Tuple[List[int], np.ndarray, List[str], List[str], List[int]]:
+    car_ids = sorted(case.cars.keys())
+    A = np.array([[case.cars[i].position[0] for i in car_ids],
+                  [case.cars[i].position[1] for i in car_ids]])
+    directions = [case.cars[i].direction for i in car_ids]
+    moves = [case.cars[i].next_moves for i in car_ids]
+    states = [case.cars[i]._state for i in car_ids]
+    return car_ids, A, directions, moves, states
+
+
+def matrix_to_case(case: Case, car_ids: List[int], A: np.ndarray, directions: List[str], moves: List[str], states: List[int]):
+    for idx, cid in enumerate(car_ids):
+        car = case.cars[cid]
+        car.position = [int(A[0, idx]), int(A[1, idx])]
+        car.direction = directions[idx]
+        car.next_moves = moves[idx]
+        car._state = states[idx]
+
+
+def linear_step(case: Case) -> List[Tuple[str, str, Tuple[int, int]]]:
+    car_ids, A, directions, moves, states = case_to_matrix(case)
+    collisions = []
+    for idx, cid in enumerate(car_ids):
+        if states[idx] != 1:
+            continue
+        if not moves[idx]:
+            states[idx] = 0
+            continue
+        cmd = moves[idx][0]
+        moves[idx] = moves[idx][1:]
+        if cmd == 'L':
+            directions[idx] = DIRECTION_LEFT[directions[idx]]
+        elif cmd == 'R':
+            directions[idx] = DIRECTION_RIGHT[directions[idx]]
+        elif cmd == 'F':
+            t = VECTOR_MOVE[directions[idx]]
+            new_pos = A[:, idx] + t
+            new_i, new_j = int(new_pos[0]), int(new_pos[1])
+            if case.grid.valid_coordinates(new_i, new_j):
+                occupant = case.grid.get_slot_index(new_i, new_j)
+                if occupant != 0:
+                    other_idx = car_ids.index(occupant)
+                    states[idx] = 2
+                    states[other_idx] = 2
+                    collisions.append((case.cars[cid].name, case.cars[occupant].name, (new_i, new_j)))
+                else:
+                    case.grid.car_move(cid, [int(A[0, idx]), int(A[1, idx])], [new_i, new_j])
+                    A[:, idx] = new_pos
+            # ignore move if boundary violation
+    matrix_to_case(case, car_ids, A, directions, moves, states)
+    state_save()
+    return collisions
+
+
 def grid_from_dict(params):
     height = params.get('height', None)
     width = params.get('width', None)
@@ -420,9 +499,36 @@ def setup():
 
 
 def run():
-    print('Simulation run: ## UNDER CONSTRUCTIONS##')
+    global case_main
+    if not case_main:
+        state_load()
+    success = -1
+    error = ''
+    msg = ''
+    if not case_main or not case_main.grid or not case_main.cars:
+        error = 'ERROR. simulation not properly setup.'
+    else:
+        step = 0
+        collisions_all = []
+        while True:
+            active = [c for c in case_main.cars.values() if c._state == 1 and c.next_moves]
+            if not active:
+                break
+            step += 1
+            collisions = linear_step(case_main)
+            for c1, c2, pos in collisions:
+                collisions_all.append((c1, c2, step, pos))
+        success = 1
+        if collisions_all:
+            lines = [f"- {c1}, collides with {c2} at ({pos[0]},{pos[1]}) at step {st}" for c1, c2, st, pos in collisions_all]
+            msg = 'After simulation, the result is:\n' + '\n'.join(lines)
+        else:
+            lines = [f"- {car.name}, ({car.position[0]},{car.position[1]}) {car.direction}" for car in case_main.cars.values()]
+            msg = 'After simulation, the result is:\n' + '\n'.join(lines)
     response = {
-        'success': 1
+        'success': success,
+        'error': error,
+        'msg': msg
     }
     return response
 
