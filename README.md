@@ -236,12 +236,36 @@ Remember to check the box “Add Python 3.9 to PATH” during install
 
 use Git to clone the source code onto your local pc, alternatively you can manually download the source code and unzip onto your local PC.
 
-```
+```bash
 git clone https://github.com/taylorhickem/fpt_gic_auto_driving.git
 cd fpt_gic_auto_driving
 ```
 
+3. create and activate a virtual environment
+
+```bash
+python -m venv env
 ```
+activate the environment `env` Windows OS
+
+```bash
+source env/Scripts/activate
+```
+activate the environment `env` Linux
+
+```bash
+source env/bin/activate
+```
+
+4. install dependencies
+
+```bash
+pip install -r requirements.txt
+```
+
+5. install the crash program
+
+```bash
 pip install -e .
 ```
 
@@ -249,9 +273,11 @@ The Crash program is now installed.
 
 You can now interact with the program from the command line using the alias `crash` 
 
+```bash
+$ crash
 ```
->crash
 
+```
 Welcome to Crash! Auto driving car simulation.
 To get started, select from any of these available commands: 
 'menu': return to this main menu

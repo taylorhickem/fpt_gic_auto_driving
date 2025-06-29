@@ -41,6 +41,10 @@ MESSAGES = {
         'success': 'created grid with height {h} and width {w}.',
         'fail': 'created grid unsuccessful.'
     },
+    'run_or_add': {
+        'start': 'Simulation ready ...',
+        'input': 'select an {option} \n[run] run simulation\n[add] add more cars\n[exit] exit\n option:'
+    },
     'cars_add': {
         'start': 'Add cars ...',
         'continue': '{add} another car? y/n.',
@@ -97,6 +101,9 @@ class InteractiveApp:
         if ex_type == 'invalid_input':
             inputs = params.get('inputs', [])
             msg = msg_template.format(inputs=inputs) + f' {msg}' if msg else msg_template.format(inputs=inputs)
+        elif ex_type == 'method_not_found':
+            method = params.get('method', [])
+            msg = msg_template.format(method=method) + f' {msg}' if msg else msg_template.format(method=method)
         else:
             msg = msg_template + f' {msg}' if msg else msg_template
         return msg
@@ -109,6 +116,10 @@ class InteractiveApp:
             self.output_fn(ex_msg)
         if action == 'exit':
             self._exit()
+        elif action == 'menu':
+            self._menu()
+        elif action in DRIVE_METHODS:
+            self._generic_drive_method(action)
 
     def _get_prompt(self, levels, messages={}):
         prompt = ''
@@ -190,19 +201,19 @@ class InteractiveApp:
                 prompt_kwargs = inputs_response.get('params', {})
             elif inputs_response['success'] == -1:
                 ex_msg = inputs_response.get('error', 'unknown problem processing input')
-                self._exception_handle(ex_type='invalid_input', msg=ex_msg, params={'inputs': ''})
+                self._exception_handle(ex_type='invalid_input', msg=ex_msg, params={'inputs': ''}, action=method)
             if prompt_kwargs:
                 try:
                     response = drive_func(**prompt_kwargs)
                 except Exception as e:
-                    self._exception_handle(ex_type='fail', msg=str(e))
+                    self._exception_handle(ex_type='fail', msg=str(e), action=method)
                 else:
                     self._drive_response_process(method, response)
             else:
                 response = drive_func()
                 self._drive_response_process(method, response)
         else:
-            self._exception_handle(ex_type='method_not_found', params={'method': method})
+            self._exception_handle(ex_type='method_not_found', params={'method': method}, action=method)
 
     def _drive_response_process(self, method, response):
         if response:
@@ -211,7 +222,7 @@ class InteractiveApp:
             error = response.get('error', '')
             drive_msg = response.get('msg', '')
             if outcome == -1:
-                self._exception_handle(msg=error)
+                self._exception_handle(msg=error, action=method)
             else:
                 template_key = 'default'
                 if outcome == 1:
@@ -222,6 +233,27 @@ class InteractiveApp:
                 else:
                     msg = msg_template + f' {drive_msg}' if drive_msg else msg_template
                 self.output_fn(msg)
+
+    def _run_or_add(self):
+        method = 'run_or_add'
+        start_msg = self._get_prompt([method, 'start'])
+        self.output_fn(start_msg)
+        select_response = self._get_input([method, 'input'])
+        if select_response['success'] == 1:
+            option = select_response.get('params', {}).get('option', '')
+            if option in ['run', 'add', 'exit']:
+                if option == 'run':
+                    self.run()
+                elif option == 'add':
+                    self._cars_add()
+                elif option == 'exit':
+                    self._exit()
+            else:
+                ex_msg = 'expected values: [add, run, exit]'
+                self._exception_handle(ex_type='invalid_input', params = {'option': option}, msg=ex_msg, action=method)
+        else:
+            ex_msg = select_response.get('error', '') if select_response.get('error', '') else select_response.get('msg', '')
+            self._exception_handle(msg=ex_msg, action=method)
 
     def _menu(self):
         menu_prompt = self._get_prompt(['navigate', 'getting_started'])
@@ -237,7 +269,7 @@ class InteractiveApp:
         elif nav == 'run':
             self.run()
         else:
-            self._exception_handle(ex_type='invalid_input', params={'inputs':[nav]})
+            self._exception_handle(ex_type='invalid_input', params={'inputs':[nav]}, action='menu')
         
     def _grid_create(self):
         self._generic_drive_method(method='grid_create')
@@ -262,27 +294,32 @@ class InteractiveApp:
                         continue_yn = continue_response.get('params', {}).get('add', 'n')
                         add_open = continue_yn.lower() == 'y'
                     else:
-                        add_open = False
+                        #add_open = False
                         outcome = -1
                         cnt_response_error = continue_response.get('error', '')
                         error = f'ERROR. problem interpreting response whether to continue adding more cars. {cnt_response_error}'
                 else:
-                    add_open = False
+                    #add_open = False
                     outcome = -1
                     error = f'ERROR. car name already exists {car_name}'
             else:
+                #add_open = False
                 add_error = add_response.get('error', '')
                 error = f'ERROR. problem adding car {car_name}. {add_error}'
-                add_open = False
 
+            if outcome == -1:
+                self._exception_handle(msg=error, action='*')
+                
         if outcome == -1:
-            self._exception_handle(msg=error)
+            self._exception_handle(msg=error, action=method)
         else:
             response = {
                 'success': outcome,
                 'params': {'names': car_names},
             }
             self._drive_response_process(method, response)
+            if car_names:
+                self._run_or_add()
 
     def _car_add(self):
         method = 'car_add'
@@ -326,7 +363,6 @@ class InteractiveApp:
         return response
 
     def run(self):
-        # perform validation checks before running drive method 'run'
         self._generic_drive_method(method='run')
 
     def _setup(self):
