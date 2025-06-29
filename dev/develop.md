@@ -47,10 +47,12 @@
 
 Session logs are recorded in reverse-chronological order and timestamped to Singapore timezone. Earlier entries are at the top and older entries are at the bottom.
 
-### Linear algebra model [Developer] review and develop 2025-06-29 21:16
+### Linear algebra model [Developer] review and develop 2025-06-29 22:18
 
 review
- - 
+ - added ui navigation and retries
+ - tested simple simulation validated generated response and ran without exception
+   - one case by coincidence detected a collision, but I didn't verify wether that case SHOULD have had a collision
 
 ### Linear algebra model [Codex] Codex prompt 2025-06-29 20:47
 
