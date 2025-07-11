@@ -54,7 +54,7 @@ review
  - tested simple simulation validated generated response and ran without exception
    - one case by coincidence detected a collision, but I didn't verify wether that case SHOULD have had a collision
 
-### Linear algebra model [Codex] Codex prompt 2025-06-29 20:47
+### Linear algebra model [Codex] 2025-06-29 20:47
 
 - Implemented linear algebra helper functions `case_to_matrix`, `matrix_to_case`
   and `linear_step` in `drive.py`.

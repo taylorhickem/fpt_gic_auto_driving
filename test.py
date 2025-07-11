@@ -55,6 +55,30 @@ class CrashTests(unittest.TestCase):
         run_response = drive.run()
         self.assertEqual(1, run_response.get('success'))
 
+    def test_car_collission(self):
+        drive.state_refresh()
+        drive.grid_create(h=10, w=10)
+        car_a = {
+            'name': 'A',
+            'position': {'x': 1, 'y': 3},
+            'direction': 'N',
+            'moves': 'FFFFFF'
+        }
+        car_b = {
+            'name': 'B',
+            'position': {'x': 1, 'y': 7},
+            'direction': 'S',
+            'moves': 'FFFFF'
+        }
+        response_a = drive.car_add(**car_a)
+        response_b = drive.car_add(**car_b)
+        self.assertEqual(1, response_a.get('success'))
+        self.assertEqual(1, response_b.get('success'))
+        run_response = drive.run()
+        print(run_response)
+        has_collission = 'collide' in run_response.get('msg', '')
+        self.assertEqual(True, has_collission)
+
 
 if __name__ == '__main__':
     unittest.main()

@@ -29,8 +29,6 @@ VECTOR_MOVE = {
 }
 
 
-
-
 # classes --------------------------------------------------------------------------
 class Grid(object):
     height = 0
@@ -193,7 +191,7 @@ class Car(object):
         pos_coord = kwargs.get('position', {})
         if pos_coord:
             pos_x = int(pos_coord.get('x', None)) if pos_coord.get('x', None) else None
-            pos_y = int(pos_coord.get('y', None)) if pos_coord.get('x', None) else None
+            pos_y = int(pos_coord.get('y', None)) if pos_coord.get('y', None) else None
             self.position = [pos_x, pos_y]
 
         valid_response = self.valid_check()
